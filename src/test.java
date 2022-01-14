@@ -1,9 +1,5 @@
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
-
-import javax.print.event.PrintJobListener;
 
 public class test {
 
@@ -21,7 +17,7 @@ public class test {
 
   public static ArrayList<test.ArrEmp> employers() {
     ArrayList<test.ArrEmp> emp = new ArrayList<ArrEmp>();
-    ArrEmp newArrEmp = new ArrEmp();
+    // ArrEmp newArrEmp = new ArrEmp();
     Scanner scName, scDenp, scID, scSalary, scAge;
     String emplName;
     int amountDenp, checkName, methodID, methodSalary, methodAge;
@@ -31,12 +27,11 @@ public class test {
       scName = new Scanner(System.in);
       emplName = scName.nextLine();
 
-      System.out.println(emplName);
+      checkName = emplName.compareTo("xxx");
 
       if (checkName != 0) {
         String[] denpArr;
-        emp.add(newArrEmp);
-        emp.get(i).name = emplName;
+        emp.add(new ArrEmp());
 
         System.out.println("Insira o ID do empregado:");
         scID = new Scanner(System.in);
@@ -44,15 +39,21 @@ public class test {
 
         System.out.println("Insira a idade do empregado:");
         scAge = new Scanner(System.in);
-        methodAge = scID.nextInt();
+        methodAge = scAge.nextInt();
 
         System.out.println("Insira o salário do empregado:");
         scSalary = new Scanner(System.in);
-        methodSalary = scID.nextInt();
+        methodSalary = scSalary.nextInt();
 
         System.out.println("Insira a quantidade de dependentes:");
         scDenp = new Scanner(System.in);
         amountDenp = scDenp.nextInt();
+
+        emp.get(i).name = emplName;
+        emp.get(i).ID = methodID;
+        emp.get(i).age = methodAge;
+        emp.get(i).salary = methodSalary;
+        emp.get(i).ID = methodID;
 
         emp.get(i).dependentes = new String[amountDenp];
         denpArr = emp.get(i).dependentes;
@@ -71,8 +72,18 @@ public class test {
   }
 
   public static void main(String[] args) throws Exception {
-    ArrayList<test.ArrEmp> test;
-    test = employers();
-    System.out.println(test.toString());
+    ArrayList<test.ArrEmp> employersList;
+    employersList = employers();
+
+    for (int i = 0; i < employersList.size(); i++) {
+      System.out.println(employersList.get(i).name);
+      System.out.println(employersList.get(i).age);
+      System.out.println(employersList.get(i).salary);
+      System.out.println(employersList.get(i).ID);
+      for (int j = 0; j < employersList.get(i).dependentes.length; j++) {
+        System.out.println(employersList.get(i).dependentes[j]);
+      }
+
+    }
   }
 }
