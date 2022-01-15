@@ -1,3 +1,5 @@
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -8,22 +10,20 @@ public class test {
     int age, ID, salary;
     String[] dependentes;
 
-    @Override
-    public String toString() {
-      return getClass().getSimpleName() + "[name=" + name + "]";
-    }
-
+    // @Override
+    // public String toString() {
+    //   return getClass().getSimpleName() + "[name=" + name + "]";
+    // }
   }
 
   public static ArrayList<test.ArrEmp> employers() {
     ArrayList<test.ArrEmp> emp = new ArrayList<ArrEmp>();
-    // ArrEmp newArrEmp = new ArrEmp();
     Scanner scName, scDenp, scID, scSalary, scAge;
     String emplName;
     int amountDenp, checkName, methodID, methodSalary, methodAge;
 
     for (int i = 0; i < emp.size() + 1; i++) {
-      System.out.println("Insira o nome do empregado:");
+      System.out.println("Insira o primeiro nome do empregado:");
       scName = new Scanner(System.in);
       emplName = scName.nextLine();
 
@@ -63,27 +63,32 @@ public class test {
           scDenp = new Scanner(System.in);
           emp.get(i).dependentes[j] = scDenp.next();
         }
-
       }
     }
-
     return emp;
 
   }
 
   public static void main(String[] args) throws Exception {
     ArrayList<test.ArrEmp> employersList;
+    String name;
+    int ID, age, salary, den;
     employersList = employers();
 
+    FileWriter arq = new FileWriter("./src/arquivo1");
+    PrintWriter writeArq = new PrintWriter(arq);
+    writeArq.println("================= Lista de Empregados =================");
+    writeArq.println("|Nome      Idade      ID      Salario      Dependentes|");
     for (int i = 0; i < employersList.size(); i++) {
-      System.out.println(employersList.get(i).name);
-      System.out.println(employersList.get(i).age);
-      System.out.println(employersList.get(i).salary);
-      System.out.println(employersList.get(i).ID);
-      for (int j = 0; j < employersList.get(i).dependentes.length; j++) {
-        System.out.println(employersList.get(i).dependentes[j]);
-      }
+      name = employersList.get(i).name;
+      ID = employersList.get(i).ID;
+      age = employersList.get(i).age;
+      salary = employersList.get(i).salary;
+      den = employersList.get(i).dependentes.length;
 
+      writeArq.printf("|%s     %d       %d     %d        %d|\n", name, age, ID, salary, den);
     }
+
+    arq.close();
   }
 }
