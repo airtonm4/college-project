@@ -94,8 +94,9 @@ public class test {
     // Gerando arquivo.
     FileWriter arq = new FileWriter("./src/arquivo1");
     PrintWriter writeArq = new PrintWriter(arq);
-    writeArq.println("==================== Lista de Empregados ====================");
-    writeArq.println("|Nome      Idade      ID      Salario      Dependentes/Idade|");
+    writeArq.println("======================= Lista de Empregados =======================");
+    writeArq.printf("%s %10s %7s %10s %20s \n","Nome", "Idade", "ID", "Salario", "Dependentes/Idade");
+    writeArq.println("===================================================================");
     for (int i = 0; i < employersList.size(); i++) {
       name = employersList.get(i).name;
       ID = employersList.get(i).ID;
@@ -107,11 +108,11 @@ public class test {
       denAge = employersList.get(i).dependentAge;
       den = employersList.get(i).dependent;
 
-      writeArq.printf("|%s     %d       %d     %d        ", name, age, ID, salary);
+      writeArq.printf("%s %7d %11d %10d ", name, age, ID, salary);
       for (int j = 0; j < denAmount; j++) {
-        writeArq.printf("%s %d ", den[j], denAge[j]);
+        writeArq.printf(" %s %d ", den[j], denAge[j]);
       }
-      writeArq.printf("|\n");
+      writeArq.printf("\n");
     }
 
     arq.close();
