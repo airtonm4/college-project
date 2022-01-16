@@ -3,8 +3,8 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class test {
-
+public class first {
+  //Registro dos dados do empregado.
   public static class ArrEmp {
     String name;
     int age, ID, salary;
@@ -19,6 +19,7 @@ public class test {
     String emplName, dependentName;
     int amountDenp, checkName, methodID, methodSalary, methodAge;
 
+    //Entrada de dados.
     System.out.println("========= Entrada de dados =========");
 
     for (int i = 0; i < emp.size() + 1; i++) {
@@ -49,7 +50,7 @@ public class test {
         scDenp = new Scanner(System.in);
         amountDenp = scDenp.nextInt();
 
-        // Adicionando os dados do empregado no ArrayList.
+        //Adicionando os dados do empregado pego pelo o Scanner no ArrayList emp.
         emp.get(i).name = emplName;
         emp.get(i).ID = methodID;
         emp.get(i).age = methodAge;
@@ -60,7 +61,7 @@ public class test {
         emp.get(i).dependentAge = new int[amountDenp];
 
         denpArr = emp.get(i).dependent;
-
+        //Inserindo dados do atributo dependent do registro ArrEmp.
         for (int j = 0; j < denpArr.length; j++) {
           int dependentAge;
           System.out.println("Insira o nome do " + (j + 1) + "º" + (" dependente:"));
@@ -71,8 +72,7 @@ public class test {
           scDependentAge = new Scanner(System.in);
           dependentAge = scDependentAge.nextInt();
 
-          // Formatar entrada de dados, nome / idade dos dependentes.
-          // dependentName += " "+dependentAge;
+          
           emp.get(i).dependent[j] = dependentName;
           emp.get(i).dependentAge[j] = dependentAge;
         }
@@ -83,21 +83,24 @@ public class test {
   }
 
   public static void main(String[] args) throws Exception {
-    ArrayList<test.ArrEmp> employersList;
+
+    ArrayList<ArrEmp> employersList;
     String name;
     int ID, age, salary, denAmount;
     String[] den;
     int[] denAge;
-
+    //Chamada no metodo employers() que retorna um ArrayList do tipo ArrEmp.
     employersList = employers();
 
-    // Gerando arquivo.
+    // Gerando arquivo de acordo com a entrada de dados do método employers().
     FileWriter arq = new FileWriter("./src/arquivo1");
     PrintWriter writeArq = new PrintWriter(arq);
     writeArq.println("======================= Lista de Empregados =======================");
     writeArq.printf("%s %10s %7s %10s %20s \n","Nome", "Idade", "ID", "Salario", "Dependentes/Idade");
     writeArq.println("===================================================================");
     for (int i = 0; i < employersList.size(); i++) {
+
+      //Tornando a construção do arquivo mais simples.
       name = employersList.get(i).name;
       ID = employersList.get(i).ID;
       age = employersList.get(i).age;
@@ -108,6 +111,7 @@ public class test {
       denAge = employersList.get(i).dependentAge;
       den = employersList.get(i).dependent;
 
+      //Introduzindo texto no arquivo.
       writeArq.printf("%s %7d %11d %10d ", name, age, ID, salary);
       for (int j = 0; j < denAmount; j++) {
         writeArq.printf(" %s %d ", den[j], denAge[j]);

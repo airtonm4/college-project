@@ -5,15 +5,14 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Scanner;
 
-public class second extends test {
+public class second extends first {
     public static class averageAgeList {
         String name;
-        float averageAge;
+        float[] averageAge;
 
     }
 
@@ -77,55 +76,49 @@ public class second extends test {
         return salary;
     }
 
-    public static float average(averageAgeList[] arr, int index) {
+    //Recursao
+    public static float average(float[] arr, int index) {
         if (index == 0) {
             return 0;
-        }else if(index == arr.length){
-            return (arr[index-1].averageAge + average(arr, index-1))/5;
+        } else if (index == arr.length) {
+            return (arr[index - 1] + average(arr, index - 1)) / arr.length;
         }
-        return arr[index-1].averageAge + average(arr, index-1);
+        return arr[index - 1] + average(arr, index - 1);
 
     }
+
     public static void emplAgeAverage(ArrayList<ArrEmp> arr) {
-        float max, min, average;
-        String nameMax, nameMin;
+        float max, min = 999999, average;
+        String nameMax = "", nameMin = "";
 
         averageAgeList[] averageArr = new averageAgeList[arr.size()];
 
         for (int i = 0; i < averageArr.length; i++) {
             averageArr[i] = new averageAgeList();
         }
-
-        // for (int i = 0; i < averageArr.length; i++) {
-        //     averageArr[i].name = arr.get(i).name;
-        //     for (int j = 0; j < arr.get(i).dependentAge.length; j++) {
-        //         averageArr[i].averageAge += arr.get(i).dependentAge[j];
-
-        //     }
-        //     averageArr[i].averageAge += arr.get(i).age;
-        //     averageArr[i].averageAge = averageArr[i].averageAge / (arr.get(i).dependentAge.length + 1);
-        //     System.out.println(averageArr[i].averageAge);
-
-        // }
-        
         max = 0;
-        min = averageArr[0].averageAge;
-        
-        
-        for (int i = 0; i < averageArr.length; i++) {
-            average = average(averageArr[i].averageAge, averageArr.length);
 
-            if (averageArr[i].averageAge > max) {
-                max = averageArr[i].averageAge;
+        for (int i = 0; i < averageArr.length; i++) {
+            averageArr[i].name = arr.get(i).name;
+            averageArr[i].averageAge = new float[arr.get(i).dependentAge.length + 1];
+
+            for (int j = 0; j < arr.get(i).dependentAge.length; j++) {
+                averageArr[i].averageAge[j] = arr.get(i).dependentAge[j];
+            }
+            averageArr[i].averageAge[arr.get(i).dependentAge.length] = arr.get(i).age;
+
+            average = average(averageArr[i].averageAge, averageArr[i].averageAge.length);
+
+            if (average > max) {
+                max = average;
                 nameMax = averageArr[i].name;
-            } else if (averageArr[i].averageAge < min) {
-                min = averageArr[i].averageAge;
+            } 
+            if (average < min) {
+                min = average;
                 nameMin = averageArr[i].name;
             }
-
         }
-        System.out.printf("Maior:%2s %.2f Menor: %2s %.2f \n", nameMax, max, nameMin, min);
-
+        System.out.printf("Maior: %2s %.2f Menor: %2s %.2f \n", nameMax, max, nameMin, min);
     }
 
     public static int removeEmployer(ArrayList<ArrEmp> arr) {
@@ -162,7 +155,7 @@ public class second extends test {
                 }
                 writeArq.printf("\n");
             }
-            
+
         }
 
     }
@@ -175,7 +168,7 @@ public class second extends test {
             int element = 1;
             Collections.sort(arr, new Comparator<ArrEmp>() {
                 @Override
-                public int compare(test.ArrEmp o1, test.ArrEmp o2) {
+                public int compare(first.ArrEmp o1, first.ArrEmp o2) {
                     // TODO Auto-generated method stub
                     return o1.name.compareTo(o2.name);
                 }
@@ -204,11 +197,12 @@ public class second extends test {
         File arq = new File(nameFile);
 
         String[] lineArr, numbersArr, lettersArr;
-        int count = 0, index = 0, inputSL, fileLength;
+        int count = 0, index = 0, fileLength;
 
         ArrayList<ArrEmp> newEmployers = new ArrayList<ArrEmp>();
         ArrayList<ArrEmp> emplArr = new ArrayList<>();
 
+        //Lendo o arquivo.txt gerado pelo o primeiro programa.
         if (arq.exists()) {
             FileReader readFile = new FileReader(nameFile);
             BufferedReader buffFile = new BufferedReader(readFile);
@@ -223,14 +217,16 @@ public class second extends test {
 
                 if (count >= 3) {
                     emplArr.add(new ArrEmp());
-                    
+
+                    //Formatando as linhas do arquivo para armazenar o texto.
                     line = line.replace("|", "");
                     line = line.replaceAll("\\s+", " ");
                     line = line.trim();
                     lineArr = new String[line.length()];
-                    
+
                     lineArr = line.split(" ");
 
+                    //Armazenando os dados do arquivo no ArrayList emplArr
                     emplArr.get(index).name = lineArr[0];
                     emplArr.get(index).age = Integer.parseInt(lineArr[1]);
                     emplArr.get(index).ID = Integer.parseInt(lineArr[2]);
@@ -245,12 +241,13 @@ public class second extends test {
                         denpArr += lineArr[i + 4];
 
                     }
-
+                    //Realizando a separação da idade e do nome dos dependentes.
                     letters = denpArr.replaceAll("[^a-zA-Z]+", " ");
                     lettersArr = letters.split(" ");
                     numbers = denpArr.replaceAll("[^0-9]+", " ").trim();
                     numbersArr = numbers.split(" ");
 
+                    //Armazenando o nome e a idade do dependentes no ArrayList.
                     for (int i = 0; i < fileLength / 2; i++) {
 
                         emplArr.get(index).dependentAge[i] = Integer.parseInt(numbersArr[i]);
@@ -265,33 +262,13 @@ public class second extends test {
 
             }
 
-            inputSL = emplArr.size();
-            ArrEmp inputShow[] = new ArrEmp[inputSL];
-
-            for (int i = 0; i < inputShow.length; i++) {
-                inputShow[i] = new ArrEmp();
-            }
-
-            for (int i = 0; i < inputShow.length; i++) {
-
-                inputShow[i].name = emplArr.get(i).name;
-                inputShow[i].age = emplArr.get(i).age;
-                inputShow[i].salary = emplArr.get(i).salary;
-
-                inputShow[i].dependent = new String[emplArr.get(i).dependent.length];
-                inputShow[i].dependentAge = new int[emplArr.get(i).dependentAge.length];
-
-                for (int j = 0; j < emplArr.get(i).dependent.length; j++) {
-
-                    inputShow[i].dependent[j] = emplArr.get(i).dependent[j];
-                    inputShow[i].dependentAge[j] = emplArr.get(i).dependentAge[j];
-
-                }
-            }
+            //Código geral do menu.
             while (menuIndex != 0) {
+                //Pegar escolha de interação pelo método menu().
                 int option = menu();
                 menuIndex = option;
 
+                //Opções.
                 if (option == 1) {
                     // B - Listar empregados maiores de 40 anos.
                     for (int i = 0; i < emplArr.size(); i++) {
@@ -312,8 +289,7 @@ public class second extends test {
                     // D - calculo de media das idades dos integrantes de cada element da classe.
                     emplAgeAverage(emplArr);
                 } else if (option == 4) {
-                    // Novos empregados
-                    // E
+                    //E - Novos empregados.
 
                     newEmployers.add(new ArrEmp());
                     newEmployers = employers();
@@ -333,8 +309,6 @@ public class second extends test {
                             emplArr.get(emplArr.size() - 1).dependent[j] = newEmployers.get(i).dependent[j];
                             emplArr.get(emplArr.size() - 1).dependentAge[j] = newEmployers.get(i).dependentAge[j];
 
-                            System.out.println(emplArr.get(emplArr.size() - 1).dependent[j]);
-                            System.out.println(emplArr.get(emplArr.size() - 1).dependentAge[j]);
                         }
 
                     }
@@ -350,8 +324,10 @@ public class second extends test {
                     }
 
                 } else if (option == 6) {
+                    //G - Gerar relatório e arquivo.txt.
                     getRelatory(emplArr);
                 } else if (option == 7) {
+                    //Listar os dados atuais dos empregados.
                     int element = 0;
                     System.out.printf("%10s %14s %8s %10s %20s\n", "Nome", "Idade", "ID", "Salario",
                             "Dependentes/Idade");
@@ -366,6 +342,7 @@ public class second extends test {
                     }
 
                 } else if (option == 0) {
+                    //Sair e atualizar o arquivo1.txt.
                     System.out.println("\nObrigado por usar nosso programa.");
                     updateFile(emplArr);
                 }
